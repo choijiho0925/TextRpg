@@ -4,7 +4,7 @@ using System.Runtime.Intrinsics.Arm;
 
 namespace TextRPG
 {
-    internal class Program 
+    internal class Program
     {
         public class GameManager
         {
@@ -22,8 +22,20 @@ namespace TextRPG
             private GameManager()
             {
                 PlayerInfo = new PlayerInfo();
+                Items = new List<Item>()
+                {
+                    new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5, false),
+                    new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9, false),
+                    new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15, false),
+                    new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2, false),
+                    new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5, false),
+                    new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7, false)
+                };
             }
             public PlayerInfo PlayerInfo;
+
+            public List<Item> Items;
+           
         }
 
         public class PlayerInfo
@@ -106,7 +118,7 @@ namespace TextRPG
             }
         }
 
-        class Item
+        public class Item
         {
             public int Id;
             public string Name { get; set; }
@@ -127,8 +139,6 @@ namespace TextRPG
                 OptionValue = optionValue;
                 isBuy = isBuyItem;
             }
-
-
 
             public static string StringOption(OptionType type)
             {
@@ -154,15 +164,12 @@ namespace TextRPG
 
         class Store
         {
-            public static List<Item> Items = new List<Item>()
-        {
-            new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5, false),
-            new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9, false),
-            new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15, false),
-            new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2, false),
-            new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5, false),
-            new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7, false)
-        };
+            List<Item> Items;
+
+            public Store()
+            {
+                Items = GameManager.Instance.Items;
+            }
 
             public void MainStore()
             {
@@ -210,7 +217,7 @@ namespace TextRPG
                 Console.WriteLine("[아이템 목록]");
                 foreach (Item item in Items)
                 {
-                    Console.WriteLine($"- {item.Id} | {item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description} | {item.Gold}G");
+                    Console.WriteLine($"- {item.Id} | {item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description} | {(item.isBuy ? "구매완료" : $"{item.Gold}G")}");
                 }
                 Console.WriteLine("\n0.나가기");
                 Console.WriteLine();
@@ -224,7 +231,13 @@ namespace TextRPG
                 }
                 else if (input >= 1 && input <= 6)
                 {
-                    if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
+                    if (Items[input-1].isBuy == true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("이미 구매한 아이템입니다.");
+                        MainStore();
+                    }
+                    else if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
                     {
                         Console.Clear();
                         GameManager.Instance.PlayerInfo.gold -= Items[input - 1].Gold;
@@ -251,12 +264,19 @@ namespace TextRPG
 
         class Inventory
         {
+            List<Item> items;
+            public Inventory()
+            {
+                items = GameManager.Instance.Items;
+            }
+
             public void MainInventory()
             {
                 Console.WriteLine();
                 Console.WriteLine("인벤토리 \n보유 중인 아이템을 관리할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
+                Console.WriteLine("$\"{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}"); //아이템 목록을 출력해야함
                 Console.WriteLine();
                 Console.WriteLine("1.장착 관리 \n0.나가기");
                 Console.WriteLine();
@@ -283,6 +303,6 @@ namespace TextRPG
             {   
                 MainStart mainStart = new MainStart();
                 mainStart.PlayGame();
-            }    
+        }
     }
 }
