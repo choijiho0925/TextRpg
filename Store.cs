@@ -33,7 +33,7 @@ namespace TextRPG
             }
             Console.WriteLine("1. 아이템 구매\n0. 나가기");
             Console.WriteLine();
-            Console.WriteLine("원하시는 행동을 입력해주세요. :");
+            Console.Write("원하시는 행동을 입력해주세요. :");
             string input = Console.ReadLine();
             if (input == "0")
             {
@@ -74,7 +74,7 @@ namespace TextRPG
             if (input == 0)
             {
                 Console.Clear();
-                return;
+                MainStore();
             }
             else if (input >= 1 && input <=6 )
             {
@@ -82,20 +82,20 @@ namespace TextRPG
                 {
                     Console.Clear();
                     Console.WriteLine("구매를 완료했습니다.");
-                    return;
+                    MainStore();
                 }
                 else if (GameManager.Instance.PlayerInfo.gold <= Items[input - 1].Gold)
                 {
                     Console.Clear();
                     Console.WriteLine("Gold가 부족합니다.");
-                    return;
+                    MainStore();
                 } 
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("잘못된 입력입니다.");
-                return ;
+                BuyItem();
             }
         }
     }
