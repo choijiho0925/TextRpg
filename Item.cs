@@ -15,7 +15,9 @@ namespace TextRPG
         public int Gold { get; set; }
         public int OptionValue { get; set; }
 
-        public Item(int id,string name, string description, OptionType type, int gold, int optionValue)
+        public bool isBuy;
+
+        public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem)
         {
             Id = id;
             Name = name;
@@ -23,9 +25,12 @@ namespace TextRPG
             Type = type;
             Gold = gold;
             OptionValue = optionValue;
+            isBuy = isBuyItem;
         }
 
-        public static string StringOption (OptionType type)
+
+
+        public static string StringOption(OptionType type)
         {
             if (type == OptionType.Attack)
             {

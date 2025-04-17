@@ -115,7 +115,9 @@ namespace TextRPG
             public int Gold { get; set; }
             public int OptionValue { get; set; }
 
-            public Item(int id, string name, string description, OptionType type, int gold, int optionValue)
+            public bool isBuy;
+
+            public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem)
             {
                 Id = id;
                 Name = name;
@@ -123,7 +125,10 @@ namespace TextRPG
                 Type = type;
                 Gold = gold;
                 OptionValue = optionValue;
+                isBuy = isBuyItem;
             }
+
+
 
             public static string StringOption(OptionType type)
             {
@@ -151,12 +156,12 @@ namespace TextRPG
         {
             public static List<Item> Items = new List<Item>()
         {
-            new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5),
-            new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9),
-            new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15),
-            new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2),
-            new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5),
-            new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7)
+            new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5, false),
+            new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9, false),
+            new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15, false),
+            new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2, false),
+            new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5, false),
+            new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7, false)
         };
 
             public void MainStore()
@@ -170,7 +175,7 @@ namespace TextRPG
                 Console.WriteLine("[아이템 목록]");
                 foreach (Item item in Items)
                 {
-                    Console.WriteLine($"{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description} | {item.Gold}G");
+                    Console.WriteLine($"{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description} | {(item.isBuy ? "구매완료" : $"{item.Gold}G")}");
                 }
                 Console.WriteLine("1. 아이템 구매\n0. 나가기");
                 Console.WriteLine();
@@ -222,6 +227,8 @@ namespace TextRPG
                     if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
                     {
                         Console.Clear();
+                        GameManager.Instance.PlayerInfo.gold -= Items[input - 1].Gold;
+                        Items[input - 1].isBuy = true;
                         Console.WriteLine("구매를 완료했습니다.");
                         MainStore();
                     }
