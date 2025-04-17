@@ -276,6 +276,8 @@ namespace TextRPG
             {   
                 MainStart mainStart = new MainStart();
                 mainStart.PlayGame();
+                wqeqeqweq
+
             }    
     }
 }
