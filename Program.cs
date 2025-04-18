@@ -52,8 +52,8 @@ namespace TextRPG
             public void Info()
             {
                 Console.WriteLine();
-                Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + GameManager.Instance.PlayerInfo.attackpower + "\n방어력 :"
-                + GameManager.Instance.PlayerInfo.defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
+                Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + GameManager.Instance.PlayerInfo.attackpower + $"(+{GameManager.Instance.PlayerInfo.attackpower -= attackpower})" + "\n방어력 :"
+                + GameManager.Instance.PlayerInfo.defensepower + $"(+{GameManager.Instance.PlayerInfo.defensepower -= defensepower})" + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
                 string input = Console.ReadLine();
 
                 if (input == "0")
@@ -367,12 +367,12 @@ namespace TextRPG
                         }
                         InventoryManagement();
                     }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("잘못된 입력입니다.");
-                        InventoryManagement();
-                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.");
+                    InventoryManagement();
                 }
             }
         }
