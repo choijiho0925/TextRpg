@@ -81,13 +81,13 @@ namespace TextRPG
                     GameManager.Instance.PlayerInfo.gold -= Items[input - 1].Gold;
                     Items[input - 1].isBuy = true;
                     Console.WriteLine("구매를 완료했습니다.");
-                    MainStore();
+                    BuyItem();
                 }
                 else if (GameManager.Instance.PlayerInfo.gold <= Items[input - 1].Gold)
                 {
                     Console.Clear();
                     Console.WriteLine("Gold가 부족합니다.");
-                    MainStore();
+                    BuyItem();
                 }
             }
             else

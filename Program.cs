@@ -231,25 +231,19 @@ namespace TextRPG
                 }
                 else if (input >= 1 && input <= 6)
                 {
-                    if (Items[input-1].isBuy == true)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("이미 구매한 아이템입니다.");
-                        MainStore();
-                    }
-                    else if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
+                    if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
                     {
                         Console.Clear();
                         GameManager.Instance.PlayerInfo.gold -= Items[input - 1].Gold;
                         Items[input - 1].isBuy = true;
                         Console.WriteLine("구매를 완료했습니다.");
-                        MainStore();
+                        BuyItem();
                     }
                     else if (GameManager.Instance.PlayerInfo.gold <= Items[input - 1].Gold)
                     {
                         Console.Clear();
                         Console.WriteLine("Gold가 부족합니다.");
-                        MainStore();
+                        BuyItem();
                     }
                 }
                 else
@@ -264,10 +258,11 @@ namespace TextRPG
 
         class Inventory
         {
-            List<Item> items;
+            List<Item> Items;
+
             public Inventory()
             {
-                items = GameManager.Instance.Items;
+                Items = GameManager.Instance.Items;
             }
 
             public void MainInventory()
@@ -276,7 +271,15 @@ namespace TextRPG
                 Console.WriteLine("인벤토리 \n보유 중인 아이템을 관리할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
-                Console.WriteLine("$\"{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}"); //아이템 목록을 출력해야함
+                foreach (Item item in Items)
+                    if (item.isBuy == true)
+                    {
+                        Console.WriteLine($"-{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}");
+                    }
+                    else
+                    {
+
+                    }
                 Console.WriteLine();
                 Console.WriteLine("1.장착 관리 \n0.나가기");
                 Console.WriteLine();
@@ -295,6 +298,7 @@ namespace TextRPG
                 {
                     Console.Clear();
                     Console.WriteLine("잘못된 입력입니다.");
+                    MainInventory();
                 }
             }
         }
