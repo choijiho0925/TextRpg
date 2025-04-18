@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Design;
 using System.Reflection.Emit;
 using System.Runtime.Intrinsics.Arm;
+using static TextRPG.Program;
 
 namespace TextRPG
 {
@@ -24,18 +25,18 @@ namespace TextRPG
                 PlayerInfo = new PlayerInfo();
                 Items = new List<Item>()
                 {
-                    new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5, false),
-                    new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9, false),
-                    new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15, false),
-                    new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2, false),
-                    new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5, false),
-                    new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7, false)
+                    new Item(1, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", OptionType.Defense, 1000, 5, false, false),
+                    new Item(2, "무쇠갑옷" , "무쇠로 만들어져 튼튼한 갑옷입니다.",OptionType.Defense, 2000, 9, false, false),
+                    new Item(3, "스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", OptionType.Defense, 3500, 15, false, false),
+                    new Item(4, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", OptionType.Attack, 600, 2, false, false),
+                    new Item(5, "청동 도끼", "어디선가 사용됐던거 같은 도끼입니다.", OptionType.Attack, 1500, 5, false, false),
+                    new Item(6, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", OptionType.Attack, 2500, 7, false, false)
                 };
             }
             public PlayerInfo PlayerInfo;
 
             public List<Item> Items;
-           
+
         }
 
         public class PlayerInfo
@@ -46,13 +47,13 @@ namespace TextRPG
             public int attackpower { get; set; } = 10;
             public int defensepower { get; set; } = 5;
             public int healthpower { get; set; } = 100;
-            public int gold { get; set; } = 1500;
+            public int gold { get; set; } = 10000;
 
             public void Info()
             {
                 Console.WriteLine();
-                Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + attackpower + "\n방어력 :"
-                + defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
+                Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + GameManager.Instance.PlayerInfo.attackpower + "\n방어력 :"
+                + GameManager.Instance.PlayerInfo.defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
                 string input = Console.ReadLine();
 
                 if (input == "0")
@@ -128,8 +129,9 @@ namespace TextRPG
             public int OptionValue { get; set; }
 
             public bool isBuy;
+            public bool isEquipped;
 
-            public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem)
+            public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem, bool isEquippedItem)
             {
                 Id = id;
                 Name = name;
@@ -138,6 +140,7 @@ namespace TextRPG
                 Gold = gold;
                 OptionValue = optionValue;
                 isBuy = isBuyItem;
+                isEquipped = isEquippedItem;
             }
 
             public static string StringOption(OptionType type)
@@ -278,10 +281,10 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
                 foreach (Item item in Items)
-                    if (item.isBuy == true)
+                    if (item.isBuy == true )
                     {
-                        Console.WriteLine($"-{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}");
-                    }
+                        Console.WriteLine($"-{(item.isEquipped ? "[E]" : "")}{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}");
+                    }                    
                     else
                     {
 
@@ -298,7 +301,8 @@ namespace TextRPG
                 }
                 else if (input == "1")
                 {
-
+                    Console.Clear();
+                    InventoryManagement();
                 }
                 else
                 {
@@ -307,12 +311,76 @@ namespace TextRPG
                     MainInventory();
                 }
             }
-        }
+            public void InventoryManagement()
+            {
+                Console.WriteLine();
+                Console.WriteLine("인벤토리 - 장착 관리\r\n보유 중인 아이템을 관리할 수 있습니다.");
+                Console.WriteLine();
+                Console.WriteLine("[아이템 목록]");
+                foreach (Item item in Items)
+                    if (item.isBuy == true)
+                    {
+                        Console.WriteLine($"-{item.Id} | {(item.isEquipped ? "[E]" : "")}{item.Name} | {Item.StringOption(item.Type)}+{item.OptionValue} | {item.Description}");
+                    }
+                    else
+                    {
 
-        static void Main(string[] args)
-            {   
-                MainStart mainStart = new MainStart();
-                mainStart.PlayGame();
+                    }
+                Console.WriteLine();
+                Console.WriteLine("0.나가기");
+                Console.WriteLine();
+                Console.Write("원하시는 행동을 입력해주세요. :");
+                int input = int.Parse(Console.ReadLine());
+
+                if (input == 0)
+                {
+                    Console.Clear();
+                    MainInventory();
+                }
+                else if (input >= 1 && input <= 6)
+                {
+                    if (Items[input - 1].isBuy == true && Items[input - 1].isEquipped == false)
+                    {
+                        Console.Clear();
+                        Items[input - 1].isEquipped = true;
+                        if (Items[input - 1].Type == OptionType.Defense)
+                        {
+                            GameManager.Instance.PlayerInfo.defensepower += Items[input - 1].OptionValue;
+                        }
+                        else
+                        {
+                            GameManager.Instance.PlayerInfo.attackpower += Items[input - 1].OptionValue;
+                        }
+                            InventoryManagement();
+                    }
+                    else if (Items[input - 1].isBuy == true && Items[input - 1].isEquipped == true)
+                    {
+                        Console.Clear();
+                        Items[input - 1].isEquipped = false;
+                        if (Items[input - 1].Type == OptionType.Defense)
+                        {
+                            GameManager.Instance.PlayerInfo.defensepower -= Items[input - 1].OptionValue;
+                        }
+                        else
+                        {
+                            GameManager.Instance.PlayerInfo.attackpower -= Items[input - 1].OptionValue;
+                        }
+                        InventoryManagement();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("잘못된 입력입니다.");
+                        InventoryManagement();
+                    }
+                }
+            }
+        }
+    
+    static void Main(string[] args)
+        {
+            MainStart mainStart = new MainStart();
+            mainStart.PlayGame();
         }
     }
 }

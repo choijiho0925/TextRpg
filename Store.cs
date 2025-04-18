@@ -9,7 +9,7 @@ namespace TextRPG
     class Store
     {
         List<Item> Items;
-        
+
         public Store()
         {
             Items = GameManager.Instance.Items;

@@ -16,8 +16,9 @@ namespace TextRPG
         public int OptionValue { get; set; }
 
         public bool isBuy;
+        public bool isEquipped;
 
-        public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem)
+        public Item(int id, string name, string description, OptionType type, int gold, int optionValue, bool isBuyItem, bool isEquippedItem)
         {
             Id = id;
             Name = name;
@@ -26,9 +27,8 @@ namespace TextRPG
             Gold = gold;
             OptionValue = optionValue;
             isBuy = isBuyItem;
+            isEquipped = isEquippedItem;
         }
-
-
 
         public static string StringOption(OptionType type)
         {

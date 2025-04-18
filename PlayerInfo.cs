@@ -14,13 +14,13 @@ namespace TextRPG
         public int attackpower { get; set; } = 10;
         public int defensepower { get; set; } = 5;
         public int healthpower { get; set; } = 100;
-        public int gold { get; set; } = 1500;
+        public int gold { get; set; } = 10000;
 
         public void Info()
         {
             Console.WriteLine();
-            Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + attackpower + "\n방어력 :"
-            + defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
+            Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + GameManager.Instance.PlayerInfo.attackpower + "\n방어력 :"
+            + GameManager.Instance.PlayerInfo.defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
             string input = Console.ReadLine();
 
             if (input == "0")
