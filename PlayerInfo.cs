@@ -20,7 +20,7 @@ namespace TextRPG
         {
             Console.WriteLine();
             Console.Write("Level." + level.ToString("D2") + "\nChad" + job + "\n공격력 :" + attackpower + "\n방어력 :"
-            + defensepower + "\n체 력 :" + healthpower + "\nGold :" + gold + "G\n\n 0. 나가기 :");
+            + defensepower + "\n체 력 :" + healthpower + "\nGold :" + GameManager.Instance.PlayerInfo.gold + "G\n\n 0. 나가기 :");
             string input = Console.ReadLine();
 
             if (input == "0")
