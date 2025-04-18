@@ -109,12 +109,12 @@ namespace TextRPG
                     }
                     InventoryManagement();
                 }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("잘못된 입력입니다.");
-                    InventoryManagement();
-                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("잘못된 입력입니다.");
+                InventoryManagement();
             }
         }
     }
