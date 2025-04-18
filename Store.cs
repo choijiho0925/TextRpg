@@ -75,7 +75,13 @@ namespace TextRPG
             }
             else if (input >= 1 && input <= 6)
             {
-                if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
+                if (Items[input - 1].isBuy == true)
+                {
+                    Console.Clear();
+                    Console.WriteLine("이미 구매한 아이템입니다.");
+                    BuyItem();
+                }
+                else if (GameManager.Instance.PlayerInfo.gold >= Items[input - 1].Gold)
                 {
                     Console.Clear();
                     GameManager.Instance.PlayerInfo.gold -= Items[input - 1].Gold;
